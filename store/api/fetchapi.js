@@ -25,7 +25,7 @@ const api = {
       Object.values(apiResponse).forEach(c => {
         collections.push({
           id: c.id,
-          name: c.collection_name,
+          name: c.collection_name.trim(),
           owner: c.owner_name,
           description: c.collection_description,
           termCount: c.term_count,
