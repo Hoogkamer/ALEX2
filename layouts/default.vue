@@ -3,20 +3,38 @@
     .header
       .headercontainer
         a
-            img.navbar-brand(src="http://alex.alex-p.aws.nl.eu.abnamro.com/img/logos/a-lex_logo.png")
+            img.navbar-brand(:src="alexLoc + '/img/logos/a-lex_logo.png'")
    
         .links
           a.link(href='#') Collections
-          a.link(href="http://alex.alex-p.aws.nl.eu.abnamro.com/terms") Terms
+          a.link(:href="alexLoc+'/terms'") Terms
         
         .reg
-          a.link(href='http://alex.alex-p.aws.nl.eu.abnamro.com/register') Register
-          a.link(href="http://alex.alex-p.aws.nl.eu.abnamro.com/register") Login
-
-    nuxt
+          a.link(:href="alexLoc+ '/register'") Register
+          a.link(:href="alexLoc+ '/register'") Login
+    .content
+      nuxt
   
 </template>
 
+<script>
+import { mapActions, mapMutations, mapState } from 'vuex'
+export default {
+  components: {},
+  props: {},
+  data() {
+    return {
+      sorts1: ['Name', 'Created', 'Updated'],
+      colFilter: '',
+      sortOn: 'Name',
+      certOnly: false
+    }
+  },
+  computed: {
+    ...mapState('api', ['AlexCollections', 'alexLoc'])
+  }
+}
+</script>
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
@@ -70,6 +88,13 @@ html {
 .header {
   background-color: #2c3e50;
   height: 60px;
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  z-index: 100;
+}
+.content {
+  margin-top: 70px;
 }
 .navbar-brand {
   height: 54px;

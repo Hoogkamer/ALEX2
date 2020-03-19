@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     .breadcrum
-      a.home(href="http://alex.alex-p.aws.nl.eu.abnamro.com/") Home
+      a.home(:href="alexLoc") Home
       span.seperator /
       span Collections
     .collection-title
@@ -23,10 +23,14 @@
           div.sp2 
             select.sel(v-model='sortOn')
               option(v-for='sort in sorts1') {{sort}}
-      .collection(v-for= "collection in colList" @click='gotoCollection(collection)')
+      .collection(v-for= "collection in colList" @click='gotoCollection(collection)' @mouseover="hover = collection"
+    @mouseleave="hover = null")
         .photo
-          img.photo1(:src="'https://dummyimage.com/60x60/4e599c/fff&text='+ collection.name[0]")
+          img.photo1(:src="'https://source.unsplash.com/60x60/?'+ collection.name")
         .details
+          .quicklookbutton(v-if="hover === collection" @click.stop='quickLook=collection')
+            v-icon.lookicon mdi-eye
+            span Quick Look
           .name
             v-icon.certified(v-if="collection.certified" title='Certified') mdi-check-circle
             span {{collection.name}}
@@ -40,31 +44,43 @@
             .spec(title="Changed")
               v-icon.specsicon mdi-calendar-edit
               span.spectext {{collection.updated}}
-            .spec(title="Term count")
-              span.specsicon T
+            .spec(title="Terms")
+              v-icon.specsicon mdi-alpha-t-box-outline
               span.spectext {{collection.termCount}}
-            .spec(title="Changed")
-              span.specsicon R
+            .spec(title="Relations")
+              v-icon.specsicon mdi-ray-start-end
               span.spectext {{collection.relationCount}}
       .addinfo
         div Some extra information
+    quick-look(v-if="quickLook")
 </template>
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex'
+import QuickLook from './QuickLook'
 
 export default {
-  components: {},
+  components: { QuickLook },
   props: {},
   data() {
     return {
       sorts1: ['Name', 'Created', 'Updated'],
       colFilter: '',
       sortOn: 'Name',
-      certOnly: false
+      certOnly: false,
+      hover: null
     }
   },
   computed: {
-    ...mapState('api', ['AlexCollections']),
+    ...mapState('api', ['AlexCollections', 'alexLoc']),
+    quickLook: {
+      get() {
+        return this.$store.state.app.quickLook
+      },
+      set(value) {
+        this.$store.commit('app/setQuickLook', value)
+      }
+    },
+
     colList: function() {
       let col = this.AlexCollections
       if (this.certOnly) {
@@ -115,8 +131,8 @@ export default {
       this.selectedCollection = null
     },
     gotoCollection: function(collection) {
-      var url =
-        'http://alex.alex-p.aws.nl.eu.abnamro.com/collections/'
+      this.quickLook = null
+      var url = this.alexLoc + '/collections/'
       window.location = url + collection.id
     }
   },
@@ -138,6 +154,21 @@ var certIcon =
 .collection-title {
   margin-bottom: 30px;
 }
+.quicklookbutton {
+  display: inline-block;
+  border: 0px solid grey;
+  padding: 3px 10px;
+  border-radius: 5px;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+    0 3px 6px rgba(0, 0, 0, 0.23);
+  background-color: white;
+}
+.quicklookbutton:hover {
+  background-color: lightgray;
+}
 .help-message {
   background-color: #c8e4ff;
   color: black;
@@ -156,6 +187,7 @@ var certIcon =
 }
 .collection {
   cursor: pointer;
+  position: relative;
 }
 .collection:hover {
   background-color: rgba(0, 0, 0, 0.05);
@@ -177,10 +209,13 @@ var certIcon =
   height: 60px;
   background-color: lightblue;
   margin: 5px;
+  margin-right: 10px;
   vertical-align: top;
 }
 .photo1 {
   border-radius: 5px;
+  width: 60px;
+  height: 60px;
 }
 
 .details {
@@ -202,6 +237,11 @@ var certIcon =
 }
 .ownericon {
   color: #9e9e9e;
+  font-size: 16px;
+  margin-right: 5px;
+}
+.lookicon {
+  color: black;
   font-size: 16px;
   margin-right: 5px;
 }
@@ -281,5 +321,21 @@ a.home {
   padding-top: 40px;
   color: grey;
   font-size: 20px;
+}
+.quickLookContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 60px;
+  left: 0px;
+  background-color: rgba(200, 200, 200, 0.9);
+  padding: 40px;
+  text-align: center;
+}
+.quickLook {
+  width: 800px;
+  height: 600px;
+  background-color: white;
+  display: inline-block;
 }
 </style>
