@@ -2,7 +2,8 @@
  
     .quickLookContainer
       .quickLook
-        v-icon.close(@click='quickLook=null') mdi-close
+        .close
+          v-icon(@click='quickLook=null') mdi-close
         .header1
           .photo
             img.photo1(:src="'https://source.unsplash.com/60x60/?'+ quickLook.name")
@@ -111,17 +112,18 @@ export default {
     0 24px 38px 3px rgba(0, 0, 0, 0.14),
     0 9px 46px 8px rgba(0, 0, 0, 0.12);
 }
-.close {
+.close,
+.close button {
   font-size: 16px;
   background-color: grey;
   color: white;
   border-radius: 3px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   cursor: pointer;
 }
-.close:hover {
+.close button:hover {
   background-color: lightgray;
   color: black;
 }
