@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 //const alexloc = 'http://alex.alex-p.aws.nl.eu.abnamro.com'
-const alexloc = 'http://meet-alex.org'
+const alexloc = 'https://meet-alex.org'
 
 const api = {
   namespaced: true,
