@@ -14,37 +14,55 @@
           .subtitle Metadata
           table.metadata
             tr
-              td Created
+              td 
+                v-icon.thisicon mdi-calendar-star
+                span Created
               td {{quickLook.created}}
             tr
-              td Updated
+              td 
+                v-icon.thisicon mdi-calendar-edit
+                span Updated
               td {{quickLook.updated}}
             tr 
-              td Tags
+              td 
+                v-icon.thisicon mdi-tag
+                span Tags
               td 
                 .tag(v-for="tag in quickLook.tags") 
                   .tag1 {{tag}}
             tr
-              td Views
+              td 
+                v-icon.thisicon mdi-eye
+                span Views
               td {{quickLook.views}}
             tr
-              td Discussions
+              td 
+                v-icon.thisicon mdi-chat-outline
+                span Discussions
               td {{quickLook.discussions}}
         .mid
         .right
           .subtitle Collection
           table.metadata
             tr
-              td Owner
+              td 
+                v-icon.thisicon mdi-account
+                span Owner
               td {{quickLook.owner}}
             tr
-              td Contributors
+              td 
+                v-icon.thisicon mdi-account-group
+                span Contributors
               td 
             tr 
-              td Nr of terms
+              td 
+                v-icon.thisicon mdi-alpha-t-box-outline
+                span Nr of terms
               td {{quickLook.termCount}}
             tr
-              td Nr of relations
+              td 
+                v-icon.thisicon mdi-ray-start-end
+                span Nr of relations
               td {{quickLook.relationCount}}
         .title1 Description
         .description(v-html="quickLook.description")
@@ -94,7 +112,7 @@ export default {
   width: 100%;
   min-height: 100%;
   position: fixed;
-  top: 60px;
+  top: 30px;
   left: 0px;
   background-color: rgba(200, 200, 200, 0.9);
   padding: 40px;
@@ -102,7 +120,9 @@ export default {
 }
 .quickLook {
   width: 800px;
-  height: 600px;
+  max-height: min(calc(100vh - 100px), 800px);
+  min-height: 500px;
+
   padding: 20px;
   background-color: white;
   display: inline-block;
@@ -111,6 +131,8 @@ export default {
   box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
     0 24px 38px 3px rgba(0, 0, 0, 0.14),
     0 9px 46px 8px rgba(0, 0, 0, 0.12);
+
+  overflow: auto;
 }
 .close,
 .close button {
@@ -142,12 +164,15 @@ export default {
 }
 
 table.metadata {
-  padding: 5px;
+  padding: 5px 0px;
   width: 100%;
   color: grey;
 }
 table.metadata tr :nth-child(2) {
   text-align: right;
+}
+table.metadata tr td {
+  padding: 3px 0px;
 }
 .photo {
   display: inline-block;
@@ -211,5 +236,9 @@ table.metadata tr :nth-child(2) {
 }
 .gotocollection:hover {
   color: #8282ff;
+}
+.thisicon {
+  font-size: 18px;
+  margin-right: 10px;
 }
 </style>

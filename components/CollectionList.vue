@@ -50,6 +50,9 @@
             .spec(title="Relations")
               v-icon.specsicon mdi-ray-start-end
               span.spectext {{collection.relationCount}}
+            .spec(title="Views")
+              v-icon.specsicon mdi-eye
+              span.spectext {{collection.views}}
       .addinfo
         div Some extra information
     quick-look(v-if="quickLook")
@@ -63,7 +66,7 @@ export default {
   props: {},
   data() {
     return {
-      sorts1: ['Name', 'Created', 'Updated'],
+      sorts1: ['Name', 'Created', 'Updated', 'Views'],
       colFilter: '',
       sortOn: 'Name',
       certOnly: false,
@@ -92,18 +95,17 @@ export default {
         )
       }
       if (col) {
+        let sortCol = this.sortOn.toLowerCase()
         col.sort((a, b) =>
-          this.sortOn === 'Name'
-            ? a[this.sortOn.toLowerCase()]
+          sortCol === 'name'
+            ? a[sortCol]
                 .toLowerCase()
-                .localeCompare(
-                  b[this.sortOn.toLowerCase()].toLowerCase()
-                )
-            : b[this.sortOn.toLowerCase()]
+                .localeCompare(b[sortCol].toLowerCase())
+            : sortCol === 'views'
+            ? b[sortCol] - a[sortCol]
+            : b[sortCol]
                 .toLowerCase()
-                .localeCompare(
-                  a[this.sortOn.toLowerCase()].toLowerCase()
-                )
+                .localeCompare(a[sortCol].toLowerCase())
         )
       }
       console.log(col)
@@ -227,7 +229,7 @@ var certIcon =
 }
 .name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 18px;
 }
 .owner {
   padding: 8px 0px 4px 0px;
@@ -321,21 +323,5 @@ a.home {
   padding-top: 40px;
   color: grey;
   font-size: 20px;
-}
-.quickLookContainer {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 60px;
-  left: 0px;
-  background-color: rgba(200, 200, 200, 0.9);
-  padding: 40px;
-  text-align: center;
-}
-.quickLook {
-  width: 800px;
-  height: 600px;
-  background-color: white;
-  display: inline-block;
 }
 </style>
