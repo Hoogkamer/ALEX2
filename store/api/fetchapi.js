@@ -38,6 +38,7 @@ const api = {
           discussions: 0,
           tags: ['none'],
           views: 0
+          //views: Math.floor(Math.random() * 1000)
         })
       })
       state.AlexCollections = collections
